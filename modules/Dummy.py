@@ -4,12 +4,15 @@
 
 class Dummy:
   
-  self.keys = []
-  self.window = None
+  keys = []
+  window = None
   
-  def init(self,window):
-    self.window = window
+  def __init__(self):
+    print "Dummy made!"
     return None
+    
+  def setWindow(self,window):
+    self.window = window
     
   def run(self,keypress):
     return None
