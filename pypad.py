@@ -121,17 +121,35 @@ class MainWindow(wx.Frame):
         if self.askUserForFilename(defaultFile=self.filename, style=wx.SAVE,
                                    **self.defaultFileDialogOptions()):
             self.OnSave(event)
+            
     def OnCopy(self,event):
-        where=self.control.GetSelection()
+        #Done this way for compatibility reasons
+        # For Motif and MS Windows could use Copy()
+        where = self.control.GetSelection()
         if where[0] == where[1]:
             pass
         else:
-            tmp=self.control.GetString(where[0],where[-1])
-            print tmp
+            tmp = self.control.GetString(where[0],where[-1])
+            cont = wx.TextDataObject()
+            cont.SetText(tmp)
+
+            wx.TheClipboard.Open()
+            wx.TheClipboard.SetData(cont)
+            wx.TheClipboard.Close()
+            
+             
     def OnPaste(self,event):
-        pass
+        if self.control.CanPaste():    
+            self.control.Paste()
+        else:
+            pass
+            
     def OnCut(self,event):
-        pass
+        if self.control.CanCut():
+            self.control.Cut()
+        else:
+            pass
+            
     def OnPref(self,event):
         pass
 
