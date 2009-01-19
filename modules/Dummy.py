@@ -2,6 +2,7 @@
 
 #Make interface with function to load config and return array
 
+
 class Dummy:
   
   keys = []

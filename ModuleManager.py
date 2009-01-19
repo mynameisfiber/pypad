@@ -2,7 +2,7 @@
 
 import os
 from imp import load_source
-from pypad import loadConfig
+#from pypad import loadConfig
 
 class ModuleManager:
 
@@ -11,13 +11,14 @@ class ModuleManager:
   modules = []
 
   def __init__(self, config="~/.pypad/modules.conf"):
-    config = pypad.loadConfig(config)
+    #config = pypad.loadConfig(config)
+    config = self.readConfig(config)
     self.path = config["path"]
     self.modulesList = config["modules"]
     self.modules = self.loadModules(self.path)
   
   def readConfig(self, config):
-    return ["/home/fiber/projects/pypad/modules/"],["Dummy"]
+    return {"path":["/Users/fiber/Programming/pypad/modules/"],"modules":["Dummy"]}
   
   def loadModules(self,path):
     modules = []

@@ -40,10 +40,6 @@ class MainWindow(wx.Frame):
             else:
                 item = fileMenu.Append(id, label, helpText)
                 self.Bind(wx.EVT_MENU, handler, item)
-                
-                
-                
-        
         
         # Next create the edit menu
         editMenu=wx.Menu()
@@ -57,10 +53,6 @@ class MainWindow(wx.Frame):
             
                 item = editMenu.Append(id, label, helpText)
                 self.Bind(wx.EVT_MENU, handler, item)
-        
-            
-        
-        
         
         menuBar = wx.MenuBar()
         menuBar.Append(fileMenu, '&File') # Add the fileMenu to the MenuBar
@@ -137,7 +129,6 @@ class MainWindow(wx.Frame):
             wx.TheClipboard.SetData(cont)
             wx.TheClipboard.Close()
             
-             
     def OnPaste(self,event):
         if self.control.CanPaste():    
             self.control.Paste()
@@ -153,7 +144,8 @@ class MainWindow(wx.Frame):
     def OnPref(self,event):
         pass
 
-app = wx.App()
-frame = MainWindow()
-frame.Show()
-app.MainLoop()
+if __name__ == '__main__':
+  app = wx.App()
+  frame = MainWindow()
+  frame.Show()
+  app.MainLoop()
