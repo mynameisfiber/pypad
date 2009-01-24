@@ -2,7 +2,7 @@
 
 import os
 from imp import load_source
-#from pypad import loadConfig
+import sys
 
 class ModuleManager:
 
@@ -10,28 +10,31 @@ class ModuleManager:
   modulesList = []
   modules = []
 
-  def __init__(self, config="~/.pypad/modules.conf"):
-    #config = pypad.loadConfig(config)
-    config = self.readConfig(config)
-    self.path = config["path"]
+  def __init__(self, config):
+    self.path = [os.path.expanduser(path) for path in config["path"]]
     self.modulesList = config["modules"]
-    self.modules = self.loadModules(self.path)
-  
-  def readConfig(self, config):
-    return {"path":["/Users/fiber/Programming/pypad/modules/"],"modules":["Dummy"]}
-  
-  def loadModules(self,path):
-    modules = []
-    for loc in path:
-      for item in os.listdir(loc):
-        name = os.path.split(item)[-1]
-        absitem = os.path.join(loc,item)
-        if os.path.isdir(item):
-          path.append(item)
-        elif os.path.isfile(absitem) and name[-2:] == "py" and name[:-3] in self.modulesList:
-          modules.append(getattr(load_source(name,absitem),name[:-3])())
+    self.modules = self.loadModules()
+    
+  def loadModules(self, path=None):
+    if not path:
+      path = self.path
+    oldPath = sys.path
+    sys.path = path
+    modules = {}
+    failedModules = []
+    for item in self.modulesList:
+      try:
+        modules[item.lower()] = getattr(__import__(item),item)()
+      except Exception:
+        failedModules.append(item)
+    sys.path = oldPath
+    if failedModules:
+      raise Exception("Failed to load modules", failedModules)
     return modules
           
 if __name__ == "__main__":
-  test = ModuleManager()
+  import config
+  test = ModuleManager(config.readConfig()["modules"])
   print test.modules
+  print locals()
+  print test.modules["introspection"].populate(dir())

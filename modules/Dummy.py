@@ -9,7 +9,6 @@ class Dummy:
   window = None
   
   def __init__(self):
-    print "Dummy made!"
     return None
     
   def setWindow(self,window):

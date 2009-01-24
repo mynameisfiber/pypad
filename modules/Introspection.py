@@ -2,16 +2,31 @@
 
 import types
 
-class Introspect:
+class Introspection:
+
+  keys = ["tab"]
+  hooks = ["loadFile"]
+  window = None
+  
+  def __init__(self):
+    return None
+    
+  def setWindow(self,window):
+    self.window = window
+    
+  def run(self,keypress):
+    return None
+  
+  #REWRITE THIS BASED OFF OF globals() INSTEAD OF dir()
   def populate(self,list={}, curobj="None", scope=None):
   	ecurobj = eval(curobj)
-  	#print "Testing: ", curobj, " of type: ",  type(ecurobj )
+  	print "Testing: ", curobj, " of type: ",  type(ecurobj )
   	if ecurobj is None and scope:
-  		#print "Scope: ",scope
+  		print "Scope: ",scope
   		for item in scope:
   			info = self.populate(list, item)
   			if info:
-  				#print info
+  				print info
   				list.update(info)
   		return list
   	elif type(ecurobj ) is types.ModuleType:
@@ -22,7 +37,7 @@ class Introspect:
   			if item not in objlevels:
   				nscope.append("%s.%s"%(curobj,item))
   		#^^-------^^
-  		#print "Child Modules: ",nscope
+  		print "Child Modules: ",nscope
   		return self.populate(scope=nscope)
   	elif type(ecurobj ) in (types.FunctionType,types.BuiltinFunctionType):
   		try:
@@ -38,7 +53,7 @@ class Introspect:
 	
 if __name__ == '__main__':
   from numpy import linalg as n
-  i=(Introspect()).populate(scope=["n"])
+  i=(Introspection()).populate(scope=["n"])
   for k,v in i.iteritems():
   	print "Function: ",k
   	print "\tArguments: ",v["arguments"]
